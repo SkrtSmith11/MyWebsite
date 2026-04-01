@@ -29,7 +29,7 @@ export default function Home() {
   }, [trackedPlayers, playerMap, sportFilter]);
 
   const trackedPlayersList = useMemo(
-    () => trackedIds.map((id) => playerMap[id]).filter(Boolean) as ReturnType<typeof Object.values<typeof playerMap[string]>>,
+    () => trackedIds.map((id) => playerMap[id]).filter(Boolean),
     [trackedIds, playerMap]
   );
 
