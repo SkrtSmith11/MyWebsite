@@ -29,10 +29,16 @@ export function getAppState(): AppState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return defaultState();
     const parsed = JSON.parse(raw) as AppState;
-    // Ensure currentSession always exists
-    if (!parsed.currentSession) {
-      parsed.currentSession = defaultSession();
+    if (!parsed.currentSession) parsed.currentSession = defaultSession();
+
+    // Migration: TrackedPlayer shape changed in v2 to include espnId/name/team/etc.
+    // Drop any tracked players that are missing the new required fields.
+    if (Array.isArray(parsed.trackedPlayers)) {
+      parsed.trackedPlayers = parsed.trackedPlayers.filter(
+        (tp: any) => tp.espnId && tp.name && tp.sport
+      );
     }
+
     return parsed;
   } catch {
     return defaultState();
