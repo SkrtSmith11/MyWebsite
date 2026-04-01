@@ -1,5 +1,7 @@
 import type { Player } from "./types";
 
+// espnId = ESPN athlete ID used to fetch real stats from ESPN API
+// Stats below are fallback values shown while real data loads
 const PLAYERS: Player[] = [
   {
     id: "nba-lebron",
@@ -9,21 +11,18 @@ const PLAYERS: Player[] = [
     position: "SF",
     imageInitials: "LJ",
     avatarColor: "#552583",
-    gameStatus: "live",
-    opponent: "vs GSW",
+    espnId: "1966",
     lastUpdated: new Date().toISOString(),
     stats: {
       primary: [
-        { label: "PTS", value: 28, unit: "pts", trend: "up" },
-        { label: "REB", value: 8, unit: "reb", trend: "flat" },
-        { label: "AST", value: 7, unit: "ast", trend: "up" },
+        { label: "PTS", value: 25.7, unit: "pts" },
+        { label: "REB", value: 7.3, unit: "reb" },
+        { label: "AST", value: 8.3, unit: "ast" },
       ],
       secondary: [
-        { label: "FG%", value: "54.2", unit: "%", trend: "up" },
-        { label: "3PT%", value: "38.1", unit: "%", trend: "flat" },
+        { label: "FG%", value: "51.3", unit: "%" },
+        { label: "3PT%", value: "40.0", unit: "%" },
         { label: "MIN", value: 35, unit: "min" },
-        { label: "STL", value: 1, unit: "stl" },
-        { label: "+/-", value: "+12" },
       ],
     },
   },
@@ -35,21 +34,18 @@ const PLAYERS: Player[] = [
     position: "PG",
     imageInitials: "SC",
     avatarColor: "#1D428A",
-    gameStatus: "live",
-    opponent: "@ LAL",
+    espnId: "3975",
     lastUpdated: new Date().toISOString(),
     stats: {
       primary: [
-        { label: "PTS", value: 34, unit: "pts", trend: "up" },
-        { label: "3PM", value: 6, unit: "3pt", trend: "up" },
-        { label: "AST", value: 5, unit: "ast", trend: "flat" },
+        { label: "PTS", value: 26.4, unit: "pts" },
+        { label: "3PM", value: 4.8, unit: "3pt" },
+        { label: "AST", value: 5.1, unit: "ast" },
       ],
       secondary: [
-        { label: "FG%", value: "48.7", unit: "%", trend: "flat" },
-        { label: "3PT%", value: "52.3", unit: "%", trend: "up" },
+        { label: "FG%", value: "45.0", unit: "%" },
+        { label: "3PT%", value: "40.8", unit: "%" },
         { label: "MIN", value: 33, unit: "min" },
-        { label: "TO", value: 2, unit: "to" },
-        { label: "+/-", value: "-8" },
       ],
     },
   },
@@ -61,20 +57,18 @@ const PLAYERS: Player[] = [
     position: "PF",
     imageInitials: "GA",
     avatarColor: "#00471B",
-    gameStatus: "upcoming",
-    opponent: "vs BOS",
-    lastUpdated: new Date(Date.now() - 3_600_000).toISOString(),
+    espnId: "3032977",
+    lastUpdated: new Date().toISOString(),
     stats: {
       primary: [
-        { label: "PTS", value: 31.5, unit: "pts", trend: "up" },
-        { label: "REB", value: 11.8, unit: "reb", trend: "flat" },
-        { label: "AST", value: 5.7, unit: "ast", trend: "up" },
+        { label: "PTS", value: 31.5, unit: "pts" },
+        { label: "REB", value: 11.8, unit: "reb" },
+        { label: "AST", value: 5.7, unit: "ast" },
       ],
       secondary: [
-        { label: "FG%", value: "61.0", unit: "%", trend: "up" },
+        { label: "FG%", value: "61.0", unit: "%" },
         { label: "BLK", value: 1.2, unit: "blk" },
         { label: "MIN", value: 32, unit: "min" },
-        { label: "+/-", value: "+8.4" },
       ],
     },
   },
@@ -86,195 +80,18 @@ const PLAYERS: Player[] = [
     position: "C",
     imageInitials: "NJ",
     avatarColor: "#0E2240",
-    gameStatus: "final",
-    opponent: "vs PHX",
-    lastUpdated: new Date(Date.now() - 7_200_000).toISOString(),
+    espnId: "3112335",
+    lastUpdated: new Date().toISOString(),
     stats: {
       primary: [
-        { label: "PTS", value: 26, unit: "pts", trend: "flat" },
-        { label: "REB", value: 14, unit: "reb", trend: "up" },
-        { label: "AST", value: 9, unit: "ast", trend: "up" },
+        { label: "PTS", value: 26.4, unit: "pts" },
+        { label: "REB", value: 12.4, unit: "reb" },
+        { label: "AST", value: 9.0, unit: "ast" },
       ],
       secondary: [
-        { label: "FG%", value: "57.8", unit: "%", trend: "up" },
-        { label: "BLK", value: 2, unit: "blk" },
+        { label: "FG%", value: "57.8", unit: "%" },
+        { label: "BLK", value: 0.9, unit: "blk" },
         { label: "MIN", value: 34, unit: "min" },
-        { label: "+/-", value: "+18" },
-      ],
-    },
-  },
-  {
-    id: "nfl-mahomes",
-    name: "Patrick Mahomes",
-    sport: "NFL",
-    team: "Chiefs",
-    position: "QB",
-    imageInitials: "PM",
-    avatarColor: "#E31837",
-    gameStatus: "upcoming",
-    opponent: "vs BUF",
-    lastUpdated: new Date(Date.now() - 86_400_000).toISOString(),
-    stats: {
-      primary: [
-        { label: "YDS", value: 312, unit: "yds", trend: "flat" },
-        { label: "TD", value: 3, unit: "td", trend: "up" },
-        { label: "INT", value: 0, unit: "int", trend: "flat" },
-      ],
-      secondary: [
-        { label: "COMP%", value: "68.4", unit: "%", trend: "up" },
-        { label: "RTG", value: 118.2, unit: "rtg" },
-        { label: "RUSH YDS", value: 22, unit: "yds" },
-        { label: "SACKS", value: 1, unit: "sk" },
-      ],
-    },
-  },
-  {
-    id: "nfl-mccaffrey",
-    name: "Christian McCaffrey",
-    sport: "NFL",
-    team: "49ers",
-    position: "RB",
-    imageInitials: "CM",
-    avatarColor: "#AA0000",
-    gameStatus: "off",
-    lastUpdated: new Date(Date.now() - 172_800_000).toISOString(),
-    stats: {
-      primary: [
-        { label: "RUSH YDS", value: 145, unit: "yds", trend: "up" },
-        { label: "REC YDS", value: 62, unit: "yds", trend: "flat" },
-        { label: "TD", value: 2, unit: "td", trend: "up" },
-      ],
-      secondary: [
-        { label: "ATT", value: 22, unit: "att" },
-        { label: "YPC", value: 6.6, unit: "ypc", trend: "up" },
-        { label: "REC", value: 7, unit: "rec" },
-        { label: "TGTS", value: 9, unit: "tgt" },
-      ],
-    },
-  },
-  {
-    id: "nfl-jefferson",
-    name: "Justin Jefferson",
-    sport: "NFL",
-    team: "Vikings",
-    position: "WR",
-    imageInitials: "JJ",
-    avatarColor: "#4F2683",
-    gameStatus: "off",
-    lastUpdated: new Date(Date.now() - 172_800_000).toISOString(),
-    stats: {
-      primary: [
-        { label: "REC YDS", value: 128, unit: "yds", trend: "up" },
-        { label: "REC", value: 8, unit: "rec", trend: "flat" },
-        { label: "TD", value: 1, unit: "td", trend: "flat" },
-      ],
-      secondary: [
-        { label: "TGTS", value: 11, unit: "tgt" },
-        { label: "YPR", value: 16.0, unit: "ypr", trend: "up" },
-        { label: "LONG", value: 42, unit: "yds" },
-        { label: "DROP", value: 0, unit: "drp" },
-      ],
-    },
-  },
-  {
-    id: "mlb-ohtani",
-    name: "Shohei Ohtani",
-    sport: "MLB",
-    team: "Dodgers",
-    position: "DH/SP",
-    imageInitials: "SO",
-    avatarColor: "#005A9C",
-    gameStatus: "live",
-    opponent: "vs NYY",
-    lastUpdated: new Date().toISOString(),
-    stats: {
-      primary: [
-        { label: "AVG", value: ".312", trend: "up" },
-        { label: "HR", value: 18, unit: "hr", trend: "up" },
-        { label: "RBI", value: 52, unit: "rbi", trend: "up" },
-      ],
-      secondary: [
-        { label: "OBP", value: ".396" },
-        { label: "SLG", value: ".598", trend: "up" },
-        { label: "OPS", value: ".994", trend: "up" },
-        { label: "K", value: 88, unit: "k" },
-        { label: "BB", value: 41, unit: "bb" },
-      ],
-    },
-  },
-  {
-    id: "mlb-judge",
-    name: "Aaron Judge",
-    sport: "MLB",
-    team: "Yankees",
-    position: "RF",
-    imageInitials: "AJ",
-    avatarColor: "#003087",
-    gameStatus: "live",
-    opponent: "@ LAD",
-    lastUpdated: new Date().toISOString(),
-    stats: {
-      primary: [
-        { label: "AVG", value: ".291", trend: "flat" },
-        { label: "HR", value: 22, unit: "hr", trend: "up" },
-        { label: "RBI", value: 61, unit: "rbi", trend: "up" },
-      ],
-      secondary: [
-        { label: "OBP", value: ".408" },
-        { label: "SLG", value: ".612", trend: "up" },
-        { label: "OPS", value: "1.020" },
-        { label: "K%", value: "28.4", unit: "%" },
-        { label: "BB%", value: "15.9", unit: "%" },
-      ],
-    },
-  },
-  {
-    id: "nhl-mcdavid",
-    name: "Connor McDavid",
-    sport: "NHL",
-    team: "Oilers",
-    position: "C",
-    imageInitials: "CM",
-    avatarColor: "#041E42",
-    gameStatus: "upcoming",
-    opponent: "vs CGY",
-    lastUpdated: new Date(Date.now() - 3_600_000).toISOString(),
-    stats: {
-      primary: [
-        { label: "G", value: 21, unit: "g", trend: "up" },
-        { label: "A", value: 48, unit: "a", trend: "up" },
-        { label: "PTS", value: 69, unit: "pts", trend: "up" },
-      ],
-      secondary: [
-        { label: "+/-", value: "+24" },
-        { label: "PPG", value: 14, unit: "ppg" },
-        { label: "SOG", value: 142, unit: "sog" },
-        { label: "FOW%", value: "52.1", unit: "%" },
-      ],
-    },
-  },
-  {
-    id: "nhl-matthews",
-    name: "Auston Matthews",
-    sport: "NHL",
-    team: "Maple Leafs",
-    position: "C",
-    imageInitials: "AM",
-    avatarColor: "#003E7E",
-    gameStatus: "final",
-    opponent: "@ MTL",
-    lastUpdated: new Date(Date.now() - 5_400_000).toISOString(),
-    stats: {
-      primary: [
-        { label: "G", value: 33, unit: "g", trend: "up" },
-        { label: "A", value: 29, unit: "a", trend: "flat" },
-        { label: "PTS", value: 62, unit: "pts", trend: "up" },
-      ],
-      secondary: [
-        { label: "+/-", value: "+18" },
-        { label: "PPG", value: 11, unit: "ppg" },
-        { label: "SOG", value: 181, unit: "sog" },
-        { label: "SH%", value: "18.2", unit: "%" },
       ],
     },
   },
@@ -286,20 +103,87 @@ const PLAYERS: Player[] = [
     position: "SF",
     imageInitials: "JT",
     avatarColor: "#007A33",
-    gameStatus: "upcoming",
-    opponent: "@ MIL",
-    lastUpdated: new Date(Date.now() - 3_600_000).toISOString(),
+    espnId: "4065648",
+    lastUpdated: new Date().toISOString(),
     stats: {
       primary: [
-        { label: "PTS", value: 27.4, unit: "pts", trend: "up" },
-        { label: "REB", value: 8.3, unit: "reb", trend: "flat" },
-        { label: "AST", value: 4.8, unit: "ast", trend: "up" },
+        { label: "PTS", value: 27.4, unit: "pts" },
+        { label: "REB", value: 8.3, unit: "reb" },
+        { label: "AST", value: 4.8, unit: "ast" },
       ],
       secondary: [
         { label: "FG%", value: "46.1", unit: "%" },
         { label: "3PT%", value: "37.5", unit: "%" },
         { label: "MIN", value: 36, unit: "min" },
-        { label: "+/-", value: "+5.2" },
+      ],
+    },
+  },
+  {
+    id: "nfl-mahomes",
+    name: "Patrick Mahomes",
+    sport: "NFL",
+    team: "Chiefs",
+    position: "QB",
+    imageInitials: "PM",
+    avatarColor: "#E31837",
+    espnId: "3139477",
+    lastUpdated: new Date().toISOString(),
+    stats: {
+      primary: [
+        { label: "YDS", value: 3928, unit: "yds" },
+        { label: "TD", value: 26, unit: "td" },
+        { label: "INT", value: 11, unit: "int" },
+      ],
+      secondary: [
+        { label: "COMP%", value: "67.4", unit: "%" },
+        { label: "RTG", value: 101.5 },
+        { label: "GP", value: 17, unit: "gp" },
+      ],
+    },
+  },
+  {
+    id: "nfl-mccaffrey",
+    name: "Christian McCaffrey",
+    sport: "NFL",
+    team: "49ers",
+    position: "RB",
+    imageInitials: "CM",
+    avatarColor: "#AA0000",
+    espnId: "3054211",
+    lastUpdated: new Date().toISOString(),
+    stats: {
+      primary: [
+        { label: "RUSH YDS", value: 1459, unit: "yds" },
+        { label: "REC YDS", value: 564, unit: "yds" },
+        { label: "TD", value: 21, unit: "td" },
+      ],
+      secondary: [
+        { label: "ATT", value: 272, unit: "att" },
+        { label: "YPC", value: 5.4, unit: "ypc" },
+        { label: "REC", value: 67, unit: "rec" },
+      ],
+    },
+  },
+  {
+    id: "nfl-jefferson",
+    name: "Justin Jefferson",
+    sport: "NFL",
+    team: "Vikings",
+    position: "WR",
+    imageInitials: "JJ",
+    avatarColor: "#4F2683",
+    espnId: "4241479",
+    lastUpdated: new Date().toISOString(),
+    stats: {
+      primary: [
+        { label: "REC YDS", value: 1533, unit: "yds" },
+        { label: "REC", value: 105, unit: "rec" },
+        { label: "TD", value: 9, unit: "td" },
+      ],
+      secondary: [
+        { label: "TGTS", value: 144, unit: "tgt" },
+        { label: "YPR", value: 14.6, unit: "ypr" },
+        { label: "GP", value: 17, unit: "gp" },
       ],
     },
   },
@@ -311,19 +195,110 @@ const PLAYERS: Player[] = [
     position: "QB",
     imageInitials: "JB",
     avatarColor: "#FB4F14",
-    gameStatus: "off",
-    lastUpdated: new Date(Date.now() - 86_400_000).toISOString(),
+    espnId: "3915511",
+    lastUpdated: new Date().toISOString(),
     stats: {
       primary: [
-        { label: "YDS", value: 287, unit: "yds", trend: "flat" },
-        { label: "TD", value: 2, unit: "td", trend: "flat" },
-        { label: "INT", value: 1, unit: "int", trend: "down" },
+        { label: "YDS", value: 4918, unit: "yds" },
+        { label: "TD", value: 35, unit: "td" },
+        { label: "INT", value: 12, unit: "int" },
       ],
       secondary: [
-        { label: "COMP%", value: "66.8", unit: "%" },
-        { label: "RTG", value: 104.7 },
-        { label: "RUSH YDS", value: 8, unit: "yds" },
-        { label: "SACKS", value: 2, unit: "sk" },
+        { label: "COMP%", value: "68.3", unit: "%" },
+        { label: "RTG", value: 103.0 },
+        { label: "GP", value: 16, unit: "gp" },
+      ],
+    },
+  },
+  {
+    id: "mlb-ohtani",
+    name: "Shohei Ohtani",
+    sport: "MLB",
+    team: "Dodgers",
+    position: "DH/SP",
+    imageInitials: "SO",
+    avatarColor: "#005A9C",
+    espnId: "39832",
+    lastUpdated: new Date().toISOString(),
+    stats: {
+      primary: [
+        { label: "AVG", value: ".310" },
+        { label: "HR", value: 44, unit: "hr" },
+        { label: "RBI", value: 96, unit: "rbi" },
+      ],
+      secondary: [
+        { label: "OBP", value: ".390" },
+        { label: "SLG", value: ".654" },
+        { label: "OPS", value: "1.036" },
+      ],
+    },
+  },
+  {
+    id: "mlb-judge",
+    name: "Aaron Judge",
+    sport: "MLB",
+    team: "Yankees",
+    position: "RF",
+    imageInitials: "AJ",
+    avatarColor: "#003087",
+    espnId: "33912",
+    lastUpdated: new Date().toISOString(),
+    stats: {
+      primary: [
+        { label: "AVG", value: ".322" },
+        { label: "HR", value: 58, unit: "hr" },
+        { label: "RBI", value: 144, unit: "rbi" },
+      ],
+      secondary: [
+        { label: "OBP", value: ".458" },
+        { label: "SLG", value: ".701" },
+        { label: "OPS", value: "1.159" },
+      ],
+    },
+  },
+  {
+    id: "nhl-mcdavid",
+    name: "Connor McDavid",
+    sport: "NHL",
+    team: "Oilers",
+    position: "C",
+    imageInitials: "CM",
+    avatarColor: "#041E42",
+    espnId: "3895074",
+    lastUpdated: new Date().toISOString(),
+    stats: {
+      primary: [
+        { label: "G", value: 32, unit: "g" },
+        { label: "A", value: 76, unit: "a" },
+        { label: "PTS", value: 108, unit: "pts" },
+      ],
+      secondary: [
+        { label: "+/-", value: "+24" },
+        { label: "PPG", value: 24, unit: "ppg" },
+        { label: "SOG", value: 229, unit: "sog" },
+      ],
+    },
+  },
+  {
+    id: "nhl-matthews",
+    name: "Auston Matthews",
+    sport: "NHL",
+    team: "Maple Leafs",
+    position: "C",
+    imageInitials: "AM",
+    avatarColor: "#003E7E",
+    espnId: "4024890",
+    lastUpdated: new Date().toISOString(),
+    stats: {
+      primary: [
+        { label: "G", value: 47, unit: "g" },
+        { label: "A", value: 38, unit: "a" },
+        { label: "PTS", value: 85, unit: "pts" },
+      ],
+      secondary: [
+        { label: "+/-", value: "+20" },
+        { label: "PPG", value: 18, unit: "ppg" },
+        { label: "SOG", value: 281, unit: "sog" },
       ],
     },
   },
@@ -333,20 +308,10 @@ export function getAllPlayers(): Player[] {
   return PLAYERS;
 }
 
-export async function fetchPlayers(ids: string[]): Promise<Player[]> {
-  // Simulates network latency — swap body for real API call
-  await new Promise((r) => setTimeout(r, 300));
-  return PLAYERS.filter((p) => ids.includes(p.id));
+export function getPlayerById(id: string): Player | undefined {
+  return PLAYERS.find((p) => p.id === id);
 }
 
-export async function searchPlayers(query: string): Promise<Player[]> {
-  await new Promise((r) => setTimeout(r, 150));
-  const q = query.toLowerCase();
-  return PLAYERS.filter(
-    (p) =>
-      p.name.toLowerCase().includes(q) ||
-      p.team.toLowerCase().includes(q) ||
-      p.sport.toLowerCase().includes(q) ||
-      p.position.toLowerCase().includes(q)
-  );
+export async function fetchPlayers(ids: string[]): Promise<Player[]> {
+  return PLAYERS.filter((p) => ids.includes(p.id));
 }

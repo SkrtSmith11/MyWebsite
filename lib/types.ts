@@ -20,10 +20,12 @@ export interface Player {
   position: string;
   imageInitials: string;
   avatarColor: string;
+  espnId: string;
   stats: PlayerStats;
   lastUpdated: string;
   gameStatus?: "live" | "upcoming" | "final" | "off";
   opponent?: string;
+  isLiveStats?: boolean; // true = in-game stats, false = season averages
 }
 
 export interface TrackedPlayer {

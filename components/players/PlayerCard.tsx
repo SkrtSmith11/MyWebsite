@@ -104,7 +104,7 @@ export default function PlayerCard({
 
         {/* Game status + time */}
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span
               className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-white ${
                 gameStatusColors[player.gameStatus ?? "off"]
@@ -118,12 +118,19 @@ export default function PlayerCard({
             {player.opponent && (
               <span className="text-xs text-slate-400">{player.opponent}</span>
             )}
+            {/* Live vs season avg label */}
+            <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
+              player.isLiveStats
+                ? "bg-red-500/20 text-red-400"
+                : "bg-slate-700/60 text-slate-500"
+            }`}>
+              {player.isLiveStats ? "NOW" : "SEASON AVG"}
+            </span>
           </div>
           <span
             className={`text-xs ${stale ? "text-amber-500" : "text-slate-600"}`}
             title={new Date(player.lastUpdated).toLocaleString()}
           >
-            {stale ? "⚠ " : ""}
             {formatTimeAgo(player.lastUpdated)}
           </span>
         </div>
