@@ -1,19 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import type { BetType, Player } from "@/lib/types";
+import { useState, useEffect } from "react";
+import type { BetType, Player, Bet } from "@/lib/types";
+import { TRACKABLE_STATS } from "@/lib/types";
 
 interface Props {
   trackedPlayers: Player[];
   defaultPlayerId?: string;
-  onSubmit: (bet: {
-    playerId: string;
-    playerName: string;
-    type: BetType;
-    description: string;
-    amount: number;
-    odds: string;
-  }) => void;
+  onSubmit: (bet: Omit<Bet, "id" | "createdAt">) => void;
   isLocked: boolean;
 }
 
@@ -35,36 +29,57 @@ export default function BetForm({
   onSubmit,
   isLocked,
 }: Props) {
-  const [playerId, setPlayerId] = useState(defaultPlayerId ?? trackedPlayers[0]?.id ?? "");
+  const [playerId, setPlayerId] = useState(
+    defaultPlayerId ?? trackedPlayers[0]?.id ?? ""
+  );
   const [type, setType] = useState<BetType>("Player Prop");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [odds, setOdds] = useState("");
+  const [trackedStatLabel, setTrackedStatLabel] = useState("");
   const [error, setError] = useState("");
+
+  // Sync default player when prop changes (e.g. clicking "Add Bet" on a card)
+  useEffect(() => {
+    if (defaultPlayerId) setPlayerId(defaultPlayerId);
+  }, [defaultPlayerId]);
+
+  // Reset stat when player changes (different sport = different stats)
+  useEffect(() => {
+    setTrackedStatLabel("");
+  }, [playerId]);
+
+  const selectedPlayer = trackedPlayers.find((p) => p.id === playerId);
+  const statOptions = selectedPlayer ? TRACKABLE_STATS[selectedPlayer.sport] : [];
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
-    const player = trackedPlayers.find((p) => p.id === playerId);
-    if (!player) return setError("Select a player.");
+    if (!selectedPlayer) return setError("Select a player.");
     if (!description.trim()) return setError("Add a bet description.");
     const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) return setError("Enter a valid amount.");
+    if (isNaN(parsedAmount) || parsedAmount <= 0)
+      return setError("Enter a valid amount.");
     if (!odds.trim()) return setError("Enter odds (e.g. -110 or +150).");
+
+    const trackedStat = statOptions.find((s) => s.label === trackedStatLabel);
 
     onSubmit({
       playerId,
-      playerName: player.name,
+      playerName: selectedPlayer.name,
       type,
       description: description.trim(),
       amount: parsedAmount,
       odds: odds.trim(),
+      trackedStatLabel: trackedStat?.label,
+      trackedStatName: trackedStat?.friendlyName,
     });
 
     setDescription("");
     setAmount("");
     setOdds("");
+    setTrackedStatLabel("");
   }
 
   if (isLocked) {
@@ -98,6 +113,35 @@ export default function BetForm({
         </select>
       </div>
 
+      {/* Stat to track live */}
+      {statOptions.length > 0 && (
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">
+            Stat to watch live{" "}
+            <span className="text-slate-600">(optional)</span>
+          </label>
+          <select
+            value={trackedStatLabel}
+            onChange={(e) => setTrackedStatLabel(e.target.value)}
+            className={inputClass}
+          >
+            <option value="">— pick a stat —</option>
+            {statOptions.map((s) => (
+              <option key={s.label} value={s.label}>
+                {s.friendlyName}
+              </option>
+            ))}
+          </select>
+          {trackedStatLabel && (
+            <p className="text-xs text-brand-400 mt-1">
+              ✓ {selectedPlayer?.name}'s{" "}
+              {statOptions.find((s) => s.label === trackedStatLabel)?.friendlyName}{" "}
+              will be highlighted on their card
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Bet type */}
       <div>
         <label className="block text-xs text-slate-400 mb-1">Bet Type</label>
@@ -121,7 +165,13 @@ export default function BetForm({
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="e.g. LeBron over 25.5 pts"
+          placeholder={
+            selectedPlayer?.sport === "NHL"
+              ? "e.g. Caufield over 2.5 shots"
+              : selectedPlayer?.sport === "NBA"
+              ? "e.g. LeBron over 25.5 pts"
+              : "e.g. Mahomes over 275.5 pass yds"
+          }
           className={inputClass}
         />
       </div>

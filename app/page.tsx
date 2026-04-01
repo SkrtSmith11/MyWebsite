@@ -16,28 +16,23 @@ export default function Home() {
   const [defaultBetPlayerId, setDefaultBetPlayerId] = useState<string | undefined>();
   const [sportFilter, setSportFilter] = useState<string>("All");
 
-  const trackedIds = useMemo(
-    () => trackedPlayers.map((tp) => tp.playerId),
+  const { players: playerMap, loading } = usePlayerStats(trackedPlayers);
+
+  const trackedEspnIds = useMemo(
+    () => trackedPlayers.map((tp) => tp.espnId),
     [trackedPlayers]
   );
 
-  const { players: playerMap, loading } = usePlayerStats(trackedIds);
-
   const filteredTracked = useMemo(() => {
     if (sportFilter === "All") return trackedPlayers;
-    return trackedPlayers.filter((tp) => playerMap[tp.playerId]?.sport === sportFilter);
-  }, [trackedPlayers, playerMap, sportFilter]);
+    return trackedPlayers.filter((tp) => tp.sport === sportFilter);
+  }, [trackedPlayers, sportFilter]);
 
-  const trackedPlayersList = useMemo(
-    () => trackedIds.map((id) => playerMap[id]).filter(Boolean),
-    [trackedIds, playerMap]
-  );
-
+  const activeBets = session?.bets ?? [];
   const sports = ["All", "NBA", "NFL", "MLB", "NHL"];
 
   function handleAddBet(playerId: string) {
     setDefaultBetPlayerId(playerId);
-    // Scroll betting panel into view on mobile
     document.getElementById("bet-panel")?.scrollIntoView({ behavior: "smooth" });
   }
 
@@ -52,15 +47,13 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row flex-1 max-w-screen-2xl mx-auto w-full">
         {/* Main — player tracker */}
         <main className="flex-1 min-w-0 p-4 lg:p-6 space-y-5">
-          {/* Search */}
           <div className="max-w-xl">
             <PlayerSearch
-              trackedIds={trackedIds}
+              trackedEspnIds={trackedEspnIds}
               onAdd={addPlayer}
             />
           </div>
 
-          {/* Sport filter */}
           {trackedPlayers.length > 0 && (
             <div className="flex items-center gap-2 flex-wrap">
               {sports.map((s) => (
@@ -79,10 +72,10 @@ export default function Home() {
             </div>
           )}
 
-          {/* Player grid */}
           <PlayerGrid
             trackedPlayers={filteredTracked}
             playerMap={playerMap}
+            bets={activeBets}
             loading={loading}
             onRemove={removePlayer}
             onTogglePin={togglePin}

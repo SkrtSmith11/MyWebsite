@@ -1,11 +1,12 @@
 "use client";
 
-import type { TrackedPlayer, Player } from "@/lib/types";
+import type { TrackedPlayer, Player, Bet } from "@/lib/types";
 import PlayerCard from "./PlayerCard";
 
 interface Props {
   trackedPlayers: TrackedPlayer[];
   playerMap: Record<string, Player>;
+  bets: Bet[];
   loading: boolean;
   onRemove: (id: string) => void;
   onTogglePin: (id: string) => void;
@@ -16,6 +17,7 @@ interface Props {
 export default function PlayerGrid({
   trackedPlayers,
   playerMap,
+  bets,
   loading,
   onRemove,
   onTogglePin,
@@ -25,20 +27,23 @@ export default function PlayerGrid({
   if (trackedPlayers.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="text-5xl mb-4">🏆</div>
+        <div className="text-5xl mb-4">🏒</div>
         <h3 className="text-lg font-semibold text-white mb-2">No players tracked yet</h3>
         <p className="text-sm text-slate-400 max-w-xs">
-          Search for players above and add them to your tracker to see their live stats in one place.
+          Search for any player above — Caufield, LeBron, Mahomes — and tap to add them.
         </p>
       </div>
     );
   }
 
-  if (loading) {
+  if (loading && Object.keys(playerMap).length === 0) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {trackedPlayers.map((tp) => (
-          <div key={tp.playerId} className="h-48 rounded-xl bg-slate-800/40 animate-pulse border border-slate-700/30" />
+          <div
+            key={tp.playerId}
+            className="h-52 rounded-xl bg-slate-800/40 animate-pulse border border-slate-700/30"
+          />
         ))}
       </div>
     );
@@ -49,14 +54,17 @@ export default function PlayerGrid({
       {trackedPlayers.map((tp) => {
         const player = playerMap[tp.playerId];
         if (!player) return null;
+        // Bets that are tracking this specific player
+        const playerBets = bets.filter((b) => b.playerId === tp.playerId);
         return (
           <PlayerCard
             key={tp.playerId}
             player={player}
             tracked={tp}
+            activeBets={playerBets}
             onRemove={onRemove}
             onTogglePin={onTogglePin}
-            onAddBet={() => onAddBet(player.id)}
+            onAddBet={() => onAddBet(tp.playerId)}
             isSessionLocked={isSessionLocked}
           />
         );
